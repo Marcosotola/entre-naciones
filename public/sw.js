@@ -1,6 +1,6 @@
 // Service worker de Entre Naciones: hace instalable la app y da una
 // pantalla offline. No cachea datos de Firestore (son de otro dominio).
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE = `entre-naciones-${VERSION}`;
 const PRECACHE = ["/offline.html", "/logo.png", "/icon-192.png"];
 
