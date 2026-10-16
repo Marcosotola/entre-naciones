@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
+/* Paleta tomada del logo de Entre Naciones */
+@theme {
+  --color-amarillo: #ffc20e;
+  --color-naranja: #f7941d;
+  --color-rojo: #e3241b;
+  --color-rojo-oscuro: #b5160f;
+  --color-cacao: #3b1a0e;
+  --color-crema: #fff8ec;
+  --color-arena: #f3e6d0;
+  --font-display: var(--font-lilita), system-ui, sans-serif;
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-crema);
+  color: var(--color-cacao);
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 font-bold transition active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+}
+
+@utility btn-primario {
+  @apply btn bg-rojo text-white shadow-md shadow-rojo/25 hover:bg-rojo-oscuro;
+}
+
+@utility btn-secundario {
+  @apply btn bg-white text-cacao ring-1 ring-cacao/15 hover:bg-arena;
+}
+
+@utility btn-whatsapp {
+  @apply btn bg-[#25d366] text-white shadow-md hover:bg-[#1ebe5a];
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-cacao/15 bg-white px-4 py-3 text-base outline-none transition focus:border-naranja focus:ring-2 focus:ring-naranja/30;
+}
+
+@utility label {
+  @apply mb-1 block text-sm font-bold text-cacao/80;
+}
+
+@utility card {
+  @apply rounded-2xl bg-white shadow-sm ring-1 ring-cacao/5;
+}
+
+@utility chip {
+  @apply inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ring-1 ring-cacao/10 transition;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

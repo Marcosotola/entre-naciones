@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin = usuario logueado cuyo email existe en la colección "admins"
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()));
+    }
+
+    match /admins/{email} {
+      allow read: if request.auth != null && request.auth.token.email.lower() == email || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // El público solo ve productos activos
+    match /productos/{id} {
+      allow read: if resource.data.activo == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /categorias/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /configuracion/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Cualquiera puede crear un pedido (checkout), solo el admin los ve y gestiona
+    match /pedidos/{id} {
+      allow create: if request.resource.data.estado == "nuevo"
+        && request.resource.data.keys().hasOnly(
+             ["codigo", "items", "subtotal", "envio", "total", "entrega", "zona", "cliente", "pago", "estado", "creado"])
+        && request.resource.data.items is list
+        && request.resource.data.items.size() > 0
+        && request.resource.data.items.size() <= 100
+        && request.resource.data.total is number
+        && request.resource.data.cliente.nombre is string
+        && request.resource.data.cliente.nombre.size() <= 120
+        && request.resource.data.creado == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
