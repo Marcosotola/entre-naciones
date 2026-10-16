@@ -49,6 +49,10 @@ export default function EditarProducto() {
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
   const quitadas = useRef<string[]>([]);
+  // Fotos subidas en esta edición: si se sale sin guardar, se borran de Storage
+  const subidasSinGuardar = useRef<string[]>([]);
+
+  useEffect(() => () => void borrarImagenes(subidasSinGuardar.current), []);
   const inputFotos = useRef<HTMLInputElement>(null);
 
   useEffect(
@@ -89,6 +93,7 @@ export default function EditarProducto() {
       lista.map(async (file) => {
         try {
           const url = await subirImagen(file, `productos/${id}`);
+          subidasSinGuardar.current.push(url);
           setForm((f) => ({ ...f, imagenes: [...f.imagenes, url] }));
         } catch (e) {
           console.error(e);
@@ -110,7 +115,13 @@ export default function EditarProducto() {
   };
 
   const quitarFoto = (url: string) => {
-    quitadas.current.push(url);
+    if (subidasSinGuardar.current.includes(url)) {
+      // Recién subida y nunca guardada: se borra ya
+      subidasSinGuardar.current = subidasSinGuardar.current.filter((u) => u !== url);
+      borrarImagenes([url]);
+    } else {
+      quitadas.current.push(url);
+    }
     set("imagenes", form.imagenes.filter((u) => u !== url));
   };
 
@@ -153,6 +164,7 @@ export default function EditarProducto() {
         actualizado: serverTimestamp(),
         ...(esNuevo ? { creado: serverTimestamp() } : {}),
       }, { merge: true });
+      subidasSinGuardar.current = [];
       await borrarImagenes(quitadas.current);
       await refrescarTienda();
       router.push("/admin/productos");
@@ -165,6 +177,7 @@ export default function EditarProducto() {
 
   const eliminar = async () => {
     if (!confirm(`¿Eliminar "${form.nombre}"? Esta acción no se puede deshacer.`)) return;
+    subidasSinGuardar.current = [];
     await borrarImagenes([...form.imagenes, ...quitadas.current]);
     await deleteDoc(doc(db, "productos", id));
     await refrescarTienda();

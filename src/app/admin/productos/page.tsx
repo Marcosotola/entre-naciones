@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { db } from "@/lib/firebase";
 import { formatPrecio, normalizar, sinStock } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
-import { cargarEjemplos } from "@/lib/ejemplos";
+import { cargarEjemplos, sincronizarEjemplos } from "@/lib/ejemplos";
 import { borrarImagenes } from "@/lib/storage";
 import type { Categoria, Producto } from "@/lib/types";
 import { refrescarTienda } from "@/lib/refrescar";
@@ -41,6 +41,12 @@ export default function AdminProductos() {
     const u2 = onSnapshot(collection(db, "categorias"), (s) =>
       setCategorias(s.docs.map((d) => toCategoria(d.id, d.data())))
     );
+    // Aplica productos de ejemplo nuevos o correcciones pendientes (una sola vez)
+    sincronizarEjemplos()
+      .then((cambio) => {
+        if (cambio) refrescarTienda();
+      })
+      .catch((e) => console.warn("No se pudieron sincronizar los ejemplos", e));
     return () => {
       u1();
       u2();
@@ -105,7 +111,7 @@ export default function AdminProductos() {
               <button onClick={onCargarEjemplos} disabled={cargandoEjemplos} className="btn-secundario">
                 {cargandoEjemplos ? "Cargando…" : "✨ Cargar productos de ejemplo"}
               </button>
-              <p className="text-xs text-cacao/60">5 menús y 3 productos venezolanos con imágenes ilustrativas, para editar o borrar después.</p>
+              <p className="text-xs text-cacao/60">5 menús, 3 productos y 3 bebidas venezolanas con imágenes ilustrativas, para editar o borrar después.</p>
             </div>
           )}
         </div>
