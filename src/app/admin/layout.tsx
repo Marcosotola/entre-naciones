@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { ClipboardList, ExternalLink, LogOut, Package, Settings, Tags } from "lucide-react";
+import { ClipboardList, LogOut, Package, Settings, Store, Tags } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "@/lib/firebase";
 
 const NAV = [
@@ -101,8 +101,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
           ))}
         </nav>
-        <Link href="/" target="_blank" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold hover:bg-arena">
-          <ExternalLink className="h-4 w-4" /> Ver tienda
+        <Link href="/" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold hover:bg-arena">
+          <Store className="h-4 w-4" /> Ver tienda
         </Link>
         <button onClick={() => signOut(auth)} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold hover:bg-arena">
           <LogOut className="h-4 w-4" /> Salir
@@ -112,9 +112,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Header móvil */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-cacao/10 bg-white px-4 md:hidden">
-        <Image src="/logo.png" alt="Entre Naciones" width={60} height={47} className="h-10 w-auto" />
-        <div className="flex gap-1">
-          <Link href="/" target="_blank" className="rounded-full p-2 hover:bg-arena" aria-label="Ver tienda"><ExternalLink className="h-5 w-5" /></Link>
+        <Link href="/" aria-label="Ir a la tienda">
+          <Image src="/logo.png" alt="Entre Naciones" width={60} height={47} className="h-10 w-auto" />
+        </Link>
+        <div className="flex items-center gap-1">
+          <Link href="/" className="flex items-center gap-1.5 rounded-full bg-arena px-3 py-2 text-sm font-bold hover:bg-arena/70">
+            <Store className="h-4 w-4" /> Ver tienda
+          </Link>
           <button onClick={() => signOut(auth)} className="rounded-full p-2 hover:bg-arena" aria-label="Salir"><LogOut className="h-5 w-5" /></button>
         </div>
       </header>
