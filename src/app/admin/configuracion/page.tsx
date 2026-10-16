@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { toConfig } from "@/lib/mappers";
 import type { ConfigTienda } from "@/lib/types";
+import { refrescarTienda } from "@/lib/refrescar";
 
 export default function AdminConfiguracion() {
   const [config, setConfig] = useState<ConfigTienda | null>(null);
@@ -30,7 +31,8 @@ export default function AdminConfiguracion() {
         whatsapp: config.whatsapp.replace(/\D/g, ""),
         zonas: config.zonas.filter((z) => z.nombre.trim()).map((z) => ({ ...z, nombre: z.nombre.trim(), costo: Number(z.costo) || 0 })),
       });
-      setMensaje("✓ Guardado. La tienda se actualiza en hasta 1 minuto.");
+      await refrescarTienda();
+      setMensaje("✓ Guardado. Ya se ve en la tienda.");
     } catch {
       setMensaje("No se pudo guardar");
     }

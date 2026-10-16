@@ -7,6 +7,7 @@ import { db } from "@/lib/firebase";
 import { slugify } from "@/lib/format";
 import { toCategoria } from "@/lib/mappers";
 import type { Categoria } from "@/lib/types";
+import { refrescarTienda } from "@/lib/refrescar";
 
 const SUGERIDAS: [string, string][] = [
   ["Comida preparada", "🍲"],
@@ -47,6 +48,7 @@ export default function AdminCategorias() {
     });
     setNombre("");
     setEmoji("");
+    refrescarTienda();
   };
 
   const cargarSugeridas = async () => {
@@ -55,6 +57,7 @@ export default function AdminCategorias() {
       batch.set(doc(collection(db, "categorias")), { nombre: n, slug: slugify(n), emoji: em, orden: i, activa: true })
     );
     await batch.commit();
+    refrescarTienda();
   };
 
   const mover = async (i: number, dir: -1 | 1) => {
@@ -67,15 +70,20 @@ export default function AdminCategorias() {
       if (c.orden !== nuevo) batch.update(doc(db, "categorias", c.id), { orden: nuevo });
     });
     await batch.commit();
+    refrescarTienda();
   };
 
-  const actualizar = (id: string, data: Partial<Categoria>) =>
-    updateDoc(doc(db, "categorias", id), { ...data, ...(data.nombre ? { slug: slugify(data.nombre) } : {}) });
+  const actualizar = async (id: string, data: Partial<Categoria>) => {
+    await updateDoc(doc(db, "categorias", id), { ...data, ...(data.nombre ? { slug: slugify(data.nombre) } : {}) });
+    refrescarTienda();
+  };
 
   const eliminar = async (c: Categoria) => {
     const usados = await getDocs(query(collection(db, "productos"), where("categoriaId", "==", c.id), limit(1)));
     if (!usados.empty) return alert(`"${c.nombre}" tiene productos. Movelos a otra categoría antes de eliminarla.`);
-    if (confirm(`¿Eliminar la categoría "${c.nombre}"?`)) await deleteDoc(doc(db, "categorias", c.id));
+    if (!confirm(`¿Eliminar la categoría "${c.nombre}"?`)) return;
+    await deleteDoc(doc(db, "categorias", c.id));
+    refrescarTienda();
   };
 
   return (

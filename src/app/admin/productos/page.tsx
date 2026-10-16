@@ -11,6 +11,7 @@ import { toCategoria, toProducto } from "@/lib/mappers";
 import { cargarEjemplos } from "@/lib/ejemplos";
 import { borrarImagenes } from "@/lib/storage";
 import type { Categoria, Producto } from "@/lib/types";
+import { refrescarTienda } from "@/lib/refrescar";
 
 type Filtro = "todos" | "activos" | "ocultos" | "sin-stock";
 
@@ -25,6 +26,7 @@ export default function AdminProductos() {
     setCargandoEjemplos(true);
     try {
       await cargarEjemplos();
+      await refrescarTienda();
     } catch (e) {
       console.error(e);
       alert("No se pudieron cargar los ejemplos");
@@ -57,13 +59,16 @@ export default function AdminProductos() {
     );
   }, [productos, busqueda, filtro]);
 
-  const cambiar = (id: string, data: Partial<Producto>) =>
-    updateDoc(doc(db, "productos", id), { ...data, actualizado: serverTimestamp() });
+  const cambiar = async (id: string, data: Partial<Producto>) => {
+    await updateDoc(doc(db, "productos", id), { ...data, actualizado: serverTimestamp() });
+    refrescarTienda();
+  };
 
   const eliminar = async (p: Producto) => {
     if (!confirm(`¿Eliminar "${p.nombre}"? Esta acción no se puede deshacer.`)) return;
     await borrarImagenes(p.imagenes); // primero Storage, después el documento
     await deleteDoc(doc(db, "productos", p.id));
+    refrescarTienda();
   };
 
   const nombreCategoria = (id: string) => categorias.find((c) => c.id === id)?.nombre ?? "Sin categoría";

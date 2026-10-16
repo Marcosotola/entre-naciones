@@ -13,6 +13,7 @@ import { slugify } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
 import { borrarImagenes, subirImagen } from "@/lib/storage";
 import type { Categoria, Origen } from "@/lib/types";
+import { refrescarTienda } from "@/lib/refrescar";
 
 interface Form {
   nombre: string;
@@ -153,6 +154,7 @@ export default function EditarProducto() {
         ...(esNuevo ? { creado: serverTimestamp() } : {}),
       }, { merge: true });
       await borrarImagenes(quitadas.current);
+      await refrescarTienda();
       router.push("/admin/productos");
     } catch (err) {
       console.error(err);
@@ -165,6 +167,7 @@ export default function EditarProducto() {
     if (!confirm(`¿Eliminar "${form.nombre}"? Esta acción no se puede deshacer.`)) return;
     await borrarImagenes([...form.imagenes, ...quitadas.current]);
     await deleteDoc(doc(db, "productos", id));
+    await refrescarTienda();
     router.push("/admin/productos");
   };
 
