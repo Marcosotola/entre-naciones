@@ -1,5 +1,6 @@
 import type { ConfigTienda } from "@/lib/types";
-import { Clock, AtSign, MapPin } from "lucide-react";
+import Link from "next/link";
+import { AtSign, Clock, Lock, MapPin } from "lucide-react";
 
 export default function Footer({ config }: { config: ConfigTienda }) {
   return (
@@ -30,9 +31,13 @@ export default function Footer({ config }: { config: ConfigTienda }) {
           </a>
         )}
       </div>
-      <p className="border-t border-crema/10 py-4 text-center text-xs text-crema/50">
-        © {new Date().getFullYear()} Entre Naciones
-      </p>
+      <div className="flex items-center justify-center gap-3 border-t border-crema/10 py-4 text-xs text-crema/50">
+        <span>© {new Date().getFullYear()} Entre Naciones</span>
+        <span aria-hidden>·</span>
+        <Link href="/admin" className="inline-flex items-center gap-1 hover:text-amarillo">
+          <Lock className="h-3 w-3" /> Administración
+        </Link>
+      </div>
     </footer>
   );
 }

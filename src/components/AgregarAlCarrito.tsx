@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { sinStock } from "@/lib/format";
@@ -40,7 +40,7 @@ export default function AgregarAlCarrito({ producto }: { producto: Producto }) {
             setOk(true);
           }}
         >
-          <ShoppingBag className="h-5 w-5" /> Agregar al carrito
+          <ShoppingCart className="h-5 w-5" /> Agregar al carrito
         </button>
       </div>
       {max === 0 && <p className="text-sm text-cacao/60">Ya tenés todo el stock disponible en tu carrito.</p>}

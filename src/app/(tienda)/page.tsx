@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Catalogo from "@/components/Catalogo";
 import { getCategorias, getConfig, getProductos } from "@/lib/data";
 
@@ -9,19 +10,25 @@ export default async function Home() {
 
   return (
     <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rojo via-naranja to-amarillo px-6 py-8 text-white shadow-lg sm:px-10 sm:py-12">
-        <div className="relative z-10 max-w-lg">
-          <p className="text-sm font-bold uppercase tracking-wider text-white/90">🇻🇪 Venezuela · Argentina 🇦🇷</p>
-          <h1 className="mt-2 font-display text-4xl leading-tight drop-shadow sm:text-5xl">
+      <section className="relative overflow-hidden rounded-3xl bg-white px-6 pb-7 pt-6 text-center shadow-sm ring-1 ring-cacao/5 sm:py-10">
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,194,14,0.3),transparent_65%)]" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-amarillo via-naranja to-rojo" />
+        <div className="relative z-10 flex flex-col items-center">
+          <Image
+            src="/logo.png"
+            alt="Entre Naciones"
+            width={714}
+            height={558}
+            priority
+            className="h-auto w-full max-w-[300px] drop-shadow-md sm:max-w-[380px]"
+          />
+          <h1 className="mt-3 max-w-md font-display text-2xl leading-tight text-cacao sm:text-3xl">
             {config.mensajeBanner || "Sabores que unen naciones"}
           </h1>
-          <p className="mt-3 text-white/90">
-            Pedí online y recibí en tu casa o retirá en el local.
+          <p className="mt-2 text-sm font-semibold text-cacao/70">
+            🇻🇪 Venezuela · Argentina 🇦🇷 · Envío a domicilio o retiro en el local
           </p>
         </div>
-        <span aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 select-none text-[9rem] leading-none opacity-30 sm:text-[12rem]">
-          🫓
-        </span>
       </section>
 
       <Catalogo productos={productos} categorias={categorias} />

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/lib/cart";
 
 export default function Header() {
@@ -18,7 +18,7 @@ export default function Header() {
           className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white ring-1 ring-cacao/10 transition hover:bg-arena"
           aria-label={`Carrito (${cantidadTotal} productos)`}
         >
-          <ShoppingBag className="h-5 w-5" />
+          <ShoppingCart className="h-5 w-5" />
           {listo && cantidadTotal > 0 && (
             <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-rojo px-1 text-xs font-bold text-white">
               {cantidadTotal}
