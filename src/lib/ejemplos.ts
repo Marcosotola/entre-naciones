@@ -85,11 +85,11 @@ const EJEMPLOS: Ejemplo[] = [
     etiquetas: ["toddy", "cacao", "chocolate", "merengada"],
   },
   {
-    nombre: "Chocolate Savoy con maní",
+    nombre: "Chocolate Savoy con leche",
     presentacion: "Barra 130 g",
-    descripcion: "El chocolate de leche venezolano de toda la vida, con maní.",
+    descripcion: "El chocolate con leche venezolano de toda la vida.",
     precio: 3500, categoria: "Dulces y chocolates", imagen: "chocolate-savoy",
-    etiquetas: ["savoy", "chocolate", "golosina", "mani"],
+    etiquetas: ["savoy", "chocolate", "golosina", "nestle"],
   },
   {
     nombre: "Diablitos Underwood",
