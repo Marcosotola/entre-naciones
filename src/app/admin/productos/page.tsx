@@ -103,9 +103,9 @@ export default function AdminProductos() {
           {productos.length === 0 && (
             <div className="mt-4 space-y-2">
               <button onClick={onCargarEjemplos} disabled={cargandoEjemplos} className="btn-secundario">
-                {cargandoEjemplos ? "Cargando…" : "✨ Cargar 10 productos de ejemplo"}
+                {cargandoEjemplos ? "Cargando…" : "✨ Cargar productos de ejemplo"}
               </button>
-              <p className="text-xs text-cacao/60">5 menús y 5 productos venezolanos con imágenes ilustrativas, para editar o borrar después.</p>
+              <p className="text-xs text-cacao/60">5 menús y 3 productos venezolanos con imágenes ilustrativas, para editar o borrar después.</p>
             </div>
           )}
         </div>

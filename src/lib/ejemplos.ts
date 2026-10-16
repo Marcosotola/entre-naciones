@@ -8,7 +8,6 @@ import { slugify } from "./format";
 const CATEGORIAS: [string, string][] = [
   ["Comida preparada", "🍲"],
   ["Harinas y granos", "🌽"],
-  ["Bebidas", "🥤"],
   ["Dulces y chocolates", "🍫"],
   ["Enlatados y almacén", "🥫"],
 ];
@@ -71,20 +70,6 @@ const EJEMPLOS: Ejemplo[] = [
     etiquetas: ["harina", "maiz", "arepas", "sin tacc"],
   },
   {
-    nombre: "Malta",
-    presentacion: "Lata 355 ml",
-    descripcion: "Bebida de malta sin alcohol, dulce y bien fría. La compañera perfecta de una arepa.",
-    precio: 2200, categoria: "Bebidas", imagen: "malta",
-    etiquetas: ["malta", "bebida", "refresco"],
-  },
-  {
-    nombre: "Toddy",
-    presentacion: "400 g",
-    descripcion: "Cacao en polvo venezolano para preparar la merengada o la leche chocolatada de siempre.",
-    precio: 6800, precioOferta: 5900, categoria: "Bebidas", imagen: "toddy",
-    etiquetas: ["toddy", "cacao", "chocolate", "merengada"],
-  },
-  {
     nombre: "Chocolate Savoy con leche",
     presentacion: "Barra 130 g",
     descripcion: "El chocolate con leche venezolano de toda la vida.",
@@ -100,7 +85,7 @@ const EJEMPLOS: Ejemplo[] = [
   },
 ];
 
-/** Crea las categorías que falten y los 10 productos de ejemplo. */
+/** Crea las categorías que falten y los productos de ejemplo. */
 export async function cargarEjemplos() {
   const snap = await getDocs(collection(db, "categorias"));
   const porSlug = new Map(snap.docs.map((d) => [d.data().slug as string, d.id]));
