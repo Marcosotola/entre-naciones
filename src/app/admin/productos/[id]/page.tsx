@@ -9,7 +9,7 @@ import {
 import { ArrowLeft, ArrowRight, Camera, ChevronLeft, Loader2, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { db } from "@/lib/firebase";
-import { slugify } from "@/lib/format";
+import { PAISES, slugify } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
 import { borrarImagenes, subirImagen } from "@/lib/storage";
 import type { Categoria, Origen } from "@/lib/types";
@@ -256,6 +256,14 @@ export default function EditarProducto() {
           {categorias.length === 0 && (
             <Link href="/admin/categorias" className="mt-1 block text-xs font-bold text-rojo">Primero creá las categorías →</Link>
           )}
+        </div>
+        <div className="sm:col-span-2">
+          <label className="label" htmlFor="pais">País de origen</label>
+          <select id="pais" className="input" value={form.origen} onChange={(e) => set("origen", e.target.value)}>
+            {Object.entries(PAISES).map(([codigo, p]) => (
+              <option key={codigo} value={codigo}>{p.bandera} {p.label}</option>
+            ))}
+          </select>
         </div>
         <div className="sm:col-span-2">
           <label className="label" htmlFor="desc">Descripción</label>

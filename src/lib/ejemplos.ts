@@ -162,6 +162,13 @@ const CAMBIOS: Record<string, () => Promise<void>> = {
   "borrar-malta-toddy": async () => {
     await Promise.all(["ejemplo-malta", "ejemplo-toddy"].map((id) => deleteDoc(doc(db, "productos", id))));
   },
+  "portada-internacional": async () => {
+    const ref = doc(db, "configuracion", "tienda");
+    const snap = await getDoc(ref);
+    if (snap.exists() && snap.data().mensajeBanner === "El sabor de Venezuela, cerca tuyo") {
+      await updateDoc(ref, { mensajeBanner: "Sabores del mundo, cerca tuyo" });
+    }
+  },
   "savoy-con-leche": async () => {
     const ref = doc(db, "productos", "ejemplo-chocolate-savoy-con-mani");
     const snap = await getDoc(ref);

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/",
     name: "Entre Naciones",
     short_name: "Entre Naciones",
-    description: "Comida y productos venezolanos",
+    description: "Comida y productos internacionales",
     lang: "es-AR",
     start_url: "/",
     scope: "/",

@@ -1,4 +1,5 @@
-export type Origen = "VE" | "AR" | "OTRO";
+/** Código de país ISO (VE, AR, CO…) o "OTRO". Ver PAISES en format.ts */
+export type Origen = string;
 
 export interface Producto {
   id: string;
@@ -95,7 +96,7 @@ export const CONFIG_DEFAULT: ConfigTienda = {
   whatsapp: "",
   direccionRetiro: "",
   horarios: "",
-  mensajeBanner: "El sabor de Venezuela, cerca tuyo",
+  mensajeBanner: "Sabores del mundo, cerca tuyo",
   zonas: [],
   envioGratisDesde: null,
   pedidoMinimo: 0,

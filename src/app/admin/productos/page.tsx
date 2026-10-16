@@ -6,7 +6,7 @@ import { collection, deleteDoc, doc, onSnapshot, updateDoc, serverTimestamp } fr
 import { Eye, EyeOff, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { db } from "@/lib/firebase";
-import { formatPrecio, normalizar, sinStock } from "@/lib/format";
+import { formatPrecio, normalizar, pais, sinStock } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
 import { cargarEjemplos, sincronizarEjemplos } from "@/lib/ejemplos";
 import { borrarImagenes } from "@/lib/storage";
@@ -111,7 +111,7 @@ export default function AdminProductos() {
               <button onClick={onCargarEjemplos} disabled={cargandoEjemplos} className="btn-secundario">
                 {cargandoEjemplos ? "Cargando…" : "✨ Cargar productos de ejemplo"}
               </button>
-              <p className="text-xs text-cacao/60">5 menús, 3 productos y 3 bebidas venezolanas con imágenes ilustrativas, para editar o borrar después.</p>
+              <p className="text-xs text-cacao/60">Menús, productos y bebidas con fotos, para editar o borrar después.</p>
             </div>
           )}
         </div>
@@ -124,7 +124,7 @@ export default function AdminProductos() {
               </Link>
               <div className="min-w-0 flex-1">
                 <Link href={`/admin/productos/${p.id}`} className="block truncate font-bold hover:text-rojo">
-                  {p.nombre}
+                  {pais(p.origen).bandera} {p.nombre}
                 </Link>
                 <p className="truncate text-xs text-cacao/60">
                   {nombreCategoria(p.categoriaId)}{p.presentacion && ` · ${p.presentacion}`}

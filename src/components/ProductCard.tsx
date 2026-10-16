@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
-import { precioFinal, sinStock } from "@/lib/format";
+import { pais, precioFinal, sinStock } from "@/lib/format";
 import type { Producto } from "@/lib/types";
 import Precio from "./Precio";
 
@@ -38,6 +38,9 @@ export default function ProductCard({ producto }: { producto: Producto }) {
         ) : (
           <span className="flex h-full items-center justify-center text-5xl">🍽️</span>
         )}
+        <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-sm shadow-sm" title={pais(producto.origen).label}>
+          {pais(producto.origen).bandera}
+        </span>
         {descuento > 0 && !agotado && (
           <span className="absolute right-2 top-2 rounded-full bg-amarillo px-2 py-0.5 text-xs font-extrabold text-cacao">
             -{descuento}%

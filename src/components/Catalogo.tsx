@@ -3,7 +3,7 @@
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useBusqueda } from "@/lib/busqueda";
-import { normalizar, precioFinal, sinStock } from "@/lib/format";
+import { normalizar, pais, precioFinal, sinStock } from "@/lib/format";
 import type { Categoria, Producto } from "@/lib/types";
 import ProductCard from "./ProductCard";
 
@@ -11,6 +11,7 @@ type Orden = "relevancia" | "menor" | "mayor" | "nombre";
 
 export default function Catalogo({ productos, categorias }: { productos: Producto[]; categorias: Categoria[] }) {
   const { busqueda, setBusqueda } = useBusqueda();
+  const [origen, setOrigen] = useState<string>("todos");
   const [categoria, setCategoria] = useState<string>("todas");
   const [orden, setOrden] = useState<Orden>("relevancia");
 
@@ -19,10 +20,18 @@ export default function Catalogo({ productos, categorias }: { productos: Product
     () => categorias.filter((c) => productos.some((p) => p.categoriaId === c.id)),
     [categorias, productos]
   );
+  // Países con productos, del que más tiene al que menos
+  const paises = useMemo(() => {
+    const cuenta = new Map<string, number>();
+    productos.forEach((p) => cuenta.set(p.origen, (cuenta.get(p.origen) ?? 0) + 1));
+    return [...cuenta.entries()].sort((a, b) => b[1] - a[1]).map(([c]) => c);
+  }, [productos]);
+
   const filtrados = useMemo(() => {
     const q = normalizar(busqueda.trim());
     const lista = productos.filter(
       (p) =>
+        (origen === "todos" || p.origen === origen) &&
         (categoria === "todas" || p.categoriaId === categoria) &&
         (!q ||
           normalizar(`${p.nombre} ${p.descripcion} ${p.etiquetas.join(" ")}`).includes(q))
@@ -34,9 +43,9 @@ export default function Catalogo({ productos, categorias }: { productos: Product
       if (orden === "nombre") return a.nombre.localeCompare(b.nombre);
       return conStockPrimero(a, b) || Number(b.destacado) - Number(a.destacado);
     });
-  }, [productos, busqueda, categoria, orden]);
+  }, [productos, busqueda, origen, categoria, orden]);
 
-  const hayFiltros = busqueda || categoria !== "todas";
+  const hayFiltros = busqueda || origen !== "todos" || categoria !== "todas";
   const destacados = productos.filter((p) => p.destacado && !sinStock(p));
 
   const chipClase = (activo: boolean) =>
@@ -44,6 +53,20 @@ export default function Catalogo({ productos, categorias }: { productos: Product
 
   return (
     <div className="space-y-6">
+      {/* Países (solo si hay productos de más de uno) */}
+      {paises.length > 1 && (
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+          <button onClick={() => setOrigen("todos")} className={chipClase(origen === "todos")}>
+            🌎 Todos los países
+          </button>
+          {paises.map((c) => (
+            <button key={c} onClick={() => setOrigen(c)} className={chipClase(origen === c)}>
+              {pais(c).bandera} {pais(c).label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Categorías */}
       {categoriasConProductos.length > 0 && (
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
@@ -106,6 +129,7 @@ export default function Catalogo({ productos, categorias }: { productos: Product
               <button
                 onClick={() => {
                   setBusqueda("");
+                  setOrigen("todos");
                   setCategoria("todas");
                 }}
                 className="btn-secundario"

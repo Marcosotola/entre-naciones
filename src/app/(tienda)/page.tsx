@@ -25,10 +25,10 @@ export default async function Home() {
             className="h-auto w-full max-w-[300px] drop-shadow-md sm:max-w-[380px]"
           />
           <h1 className="mt-3 max-w-md font-display text-2xl leading-tight text-cacao sm:text-3xl">
-            {config.mensajeBanner || "El sabor de Venezuela, cerca tuyo"}
+            {config.mensajeBanner || "Sabores del mundo, cerca tuyo"}
           </h1>
           <p className="mt-2 text-sm font-semibold text-cacao/70">
-            🇻🇪 Comidas y productos venezolanos · Envío a domicilio o retiro en el local
+            🌎 Comida y productos internacionales · Envío a domicilio o retiro en el local
           </p>
         </div>
       </section>

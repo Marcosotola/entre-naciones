@@ -1,4 +1,4 @@
-import type { Origen, Producto } from "./types";
+import type { Producto } from "./types";
 
 const ars = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -8,11 +8,32 @@ const ars = new Intl.NumberFormat("es-AR", {
 
 export const formatPrecio = (n: number) => ars.format(n);
 
-export const ORIGENES: Record<Origen, { label: string; bandera: string }> = {
+// Países de origen disponibles para los productos (el orden es el del selector del admin)
+export const PAISES: Record<string, { label: string; bandera: string }> = {
   VE: { label: "Venezuela", bandera: "🇻🇪" },
   AR: { label: "Argentina", bandera: "🇦🇷" },
+  CO: { label: "Colombia", bandera: "🇨🇴" },
+  PE: { label: "Perú", bandera: "🇵🇪" },
+  CL: { label: "Chile", bandera: "🇨🇱" },
+  UY: { label: "Uruguay", bandera: "🇺🇾" },
+  PY: { label: "Paraguay", bandera: "🇵🇾" },
+  BO: { label: "Bolivia", bandera: "🇧🇴" },
+  EC: { label: "Ecuador", bandera: "🇪🇨" },
+  BR: { label: "Brasil", bandera: "🇧🇷" },
+  MX: { label: "México", bandera: "🇲🇽" },
+  CU: { label: "Cuba", bandera: "🇨🇺" },
+  DO: { label: "Rep. Dominicana", bandera: "🇩🇴" },
+  US: { label: "Estados Unidos", bandera: "🇺🇸" },
+  ES: { label: "España", bandera: "🇪🇸" },
+  IT: { label: "Italia", bandera: "🇮🇹" },
+  PT: { label: "Portugal", bandera: "🇵🇹" },
+  JP: { label: "Japón", bandera: "🇯🇵" },
+  KR: { label: "Corea", bandera: "🇰🇷" },
+  CN: { label: "China", bandera: "🇨🇳" },
   OTRO: { label: "Otros", bandera: "🌎" },
 };
+
+export const pais = (codigo: string) => PAISES[codigo] ?? PAISES.OTRO;
 
 export function slugify(texto: string) {
   return texto

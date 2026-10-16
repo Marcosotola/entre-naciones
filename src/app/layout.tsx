@@ -11,11 +11,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Entre Naciones | Comida y productos venezolanos",
+    default: "Entre Naciones | Comida y productos internacionales",
     template: "%s | Entre Naciones",
   },
   description:
-    "Comida y productos venezolanos: arepas, tequeños, pabellón, harina P.A.N., snacks, dulces y mucho más. Pedí online con envío o retiro.",
+    "Comida y productos internacionales: arepas, tequeños, pabellón, harina P.A.N., snacks, dulces, bebidas y mucho más. Pedí online con envío o retiro.",
   applicationName: "Entre Naciones",
   appleWebApp: { capable: true, title: "Entre Naciones", statusBarStyle: "default" },
   openGraph: {
