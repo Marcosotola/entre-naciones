@@ -1,13 +1,13 @@
 # Entre Naciones 🇻🇪🇦🇷
 
-Tienda online de comida y productos venezolanos y argentinos.
+Tienda online de comida y productos venezolanos.
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Firebase (Firestore, Auth, Storage) · Vercel
 
 ## Qué incluye
 
 ### Tienda (pensada primero para el celular)
-- Catálogo con buscador instantáneo (ignora tildes), filtros por **origen** (🇻🇪 / 🇦🇷) y **categoría**, y orden por precio.
+- Catálogo con buscador instantáneo (ignora tildes), buscador fijo arriba, filtros por **categoría**, y orden por precio.
 - Productos destacados, ofertas con % de descuento y aviso de "sin stock".
 - Ficha de producto con galería deslizable, productos relacionados y datos estructurados para Google.
 - Carrito que se guarda en el navegador.

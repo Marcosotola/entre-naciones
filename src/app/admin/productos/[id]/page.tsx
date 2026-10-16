@@ -9,7 +9,7 @@ import {
 import { ArrowLeft, ArrowRight, Camera, ChevronLeft, Loader2, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { db } from "@/lib/firebase";
-import { ORIGENES, slugify } from "@/lib/format";
+import { slugify } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
 import { borrarImagenes, subirImagen } from "@/lib/storage";
 import type { Categoria, Origen } from "@/lib/types";
@@ -240,16 +240,6 @@ export default function EditarProducto() {
           {categorias.length === 0 && (
             <Link href="/admin/categorias" className="mt-1 block text-xs font-bold text-rojo">Primero creá las categorías →</Link>
           )}
-        </div>
-        <div className="sm:col-span-2">
-          <span className="label">Origen</span>
-          <div className="grid grid-cols-3 gap-2">
-            {(Object.keys(ORIGENES) as Origen[]).map((o) => (
-              <button type="button" key={o} onClick={() => set("origen", o)} className={`chip justify-center ${form.origen === o ? "bg-cacao text-crema" : "bg-white"}`}>
-                {ORIGENES[o].bandera} {ORIGENES[o].label}
-              </button>
-            ))}
-          </div>
         </div>
         <div className="sm:col-span-2">
           <label className="label" htmlFor="desc">Descripción</label>

@@ -95,7 +95,7 @@ export const CONFIG_DEFAULT: ConfigTienda = {
   whatsapp: "",
   direccionRetiro: "",
   horarios: "",
-  mensajeBanner: "Sabores de Venezuela y Argentina en un solo lugar",
+  mensajeBanner: "El sabor de Venezuela, cerca tuyo",
   zonas: [],
   envioGratisDesde: null,
   pedidoMinimo: 0,

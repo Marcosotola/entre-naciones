@@ -1,7 +1,6 @@
 import { collection, doc, getDocs, serverTimestamp, writeBatch } from "firebase/firestore";
 import { db } from "./firebase";
 import { slugify } from "./format";
-import type { Origen } from "./types";
 
 // Productos de ejemplo para arrancar. Las imágenes son ilustraciones en
 // /public/ejemplos: reemplazalas por fotos reales desde el admin.
@@ -10,8 +9,8 @@ const CATEGORIAS: [string, string][] = [
   ["Comida preparada", "🍲"],
   ["Harinas y granos", "🌽"],
   ["Bebidas", "🥤"],
-  ["Dulces y repostería", "🍰"],
-  ["Yerba e infusiones", "🧉"],
+  ["Dulces y chocolates", "🍫"],
+  ["Enlatados y almacén", "🥫"],
 ];
 
 interface Ejemplo {
@@ -20,7 +19,6 @@ interface Ejemplo {
   descripcion: string;
   precio: number;
   precioOferta?: number;
-  origen: Origen;
   categoria: string;
   imagen: string;
   destacado?: boolean;
@@ -28,75 +26,77 @@ interface Ejemplo {
 }
 
 const EJEMPLOS: Ejemplo[] = [
+  // Menús
   {
     nombre: "Pabellón criollo",
     presentacion: "Plato individual",
     descripcion: "El plato nacional de Venezuela: carne mechada, caraotas negras, arroz blanco y tajadas de plátano maduro frito.",
-    precio: 14500, origen: "VE", categoria: "Comida preparada", imagen: "pabellon-criollo", destacado: true,
+    precio: 14500, categoria: "Comida preparada", imagen: "pabellon-criollo", destacado: true,
     etiquetas: ["carne mechada", "caraotas", "plato", "almuerzo"],
   },
   {
     nombre: "Arepa reina pepiada",
     presentacion: "1 unidad",
-    descripcion: "Arepa recién hecha rellena de pollo desmechado con palta y mayonesa. Un clásico de las areperas venezolanas.",
-    precio: 7500, origen: "VE", categoria: "Comida preparada", imagen: "arepa-reina-pepiada", destacado: true,
-    etiquetas: ["arepa", "pollo", "palta", "aguacate"],
+    descripcion: "Arepa recién hecha rellena de pollo desmechado con aguacate y mayonesa. Un clásico de las areperas.",
+    precio: 7500, categoria: "Comida preparada", imagen: "arepa-reina-pepiada", destacado: true,
+    etiquetas: ["arepa", "pollo", "aguacate", "palta"],
   },
   {
     nombre: "Tequeños de queso",
-    presentacion: "Docena · listos para freír",
-    descripcion: "Bastones de masa crocante rellenos de queso blanco. Vienen congelados: freír 3-4 minutos en aceite bien caliente.",
-    precio: 9800, precioOferta: 8900, origen: "VE", categoria: "Comida preparada", imagen: "tequenos", destacado: true,
-    etiquetas: ["tequeño", "queso", "congelado", "picada"],
+    presentacion: "Docena",
+    descripcion: "Bastones de masa crocante rellenos de queso blanco, con salsa de ajo. También los tenemos congelados para freír en casa.",
+    precio: 9800, precioOferta: 8900, categoria: "Comida preparada", imagen: "tequenos", destacado: true,
+    etiquetas: ["tequeño", "queso", "picada", "pasapalo"],
   },
   {
-    nombre: "Empanadas criollas",
-    presentacion: "Media docena",
-    descripcion: "Empanadas argentinas de carne cortada a cuchillo, al horno. Masa casera y repulgue a mano.",
-    precio: 9000, origen: "AR", categoria: "Comida preparada", imagen: "empanadas-criollas",
-    etiquetas: ["empanada", "carne", "horno"],
+    nombre: "Empanadas venezolanas",
+    presentacion: "3 unidades",
+    descripcion: "Empanadas fritas de harina de maíz, crocantes por fuera. Elegí el relleno: carne mechada, pollo, queso o pabellón.",
+    precio: 7200, categoria: "Comida preparada", imagen: "empanadas-venezolanas",
+    etiquetas: ["empanada", "maiz", "frita", "desayuno"],
   },
   {
-    nombre: "Milanesa napolitana con papas fritas",
-    presentacion: "Plato individual",
-    descripcion: "Milanesa de ternera con salsa de tomate, jamón y muzzarella gratinada, acompañada de papas fritas.",
-    precio: 15900, origen: "AR", categoria: "Comida preparada", imagen: "milanesa-napolitana",
-    etiquetas: ["milanesa", "napo", "papas fritas", "plato"],
+    nombre: "Cachapa con queso de mano",
+    presentacion: "1 unidad",
+    descripcion: "Cachapa de maíz tierno dulce, a la plancha, con queso de mano y mantequilla.",
+    precio: 9500, categoria: "Comida preparada", imagen: "cachapa",
+    etiquetas: ["cachapa", "maiz", "queso de mano", "desayuno"],
   },
+  // Productos
   {
     nombre: "Harina P.A.N. blanca",
     presentacion: "1 kg",
-    descripcion: "Harina de maíz blanco precocida, ideal para arepas, empanadas venezolanas y hallacas. Sin TACC.",
-    precio: 3900, origen: "VE", categoria: "Harinas y granos", imagen: "harina-pan", destacado: true,
+    descripcion: "Harina de maíz blanco precocida, ideal para arepas, empanadas y hallacas. Sin TACC.",
+    precio: 3900, categoria: "Harinas y granos", imagen: "harina-pan", destacado: true,
     etiquetas: ["harina", "maiz", "arepas", "sin tacc"],
   },
   {
-    nombre: "Malta venezolana",
+    nombre: "Malta",
     presentacion: "Lata 355 ml",
     descripcion: "Bebida de malta sin alcohol, dulce y bien fría. La compañera perfecta de una arepa.",
-    precio: 2200, origen: "VE", categoria: "Bebidas", imagen: "malta",
-    etiquetas: ["malta", "bebida", "gaseosa"],
+    precio: 2200, categoria: "Bebidas", imagen: "malta",
+    etiquetas: ["malta", "bebida", "refresco"],
   },
   {
-    nombre: "Dulce de leche clásico",
+    nombre: "Toddy",
     presentacion: "400 g",
-    descripcion: "Dulce de leche argentino, cremoso y con el punto justo. Para untar, rellenar alfajores o comer a cucharadas.",
-    precio: 3200, precioOferta: 2800, origen: "AR", categoria: "Dulces y repostería", imagen: "dulce-de-leche",
-    etiquetas: ["dulce de leche", "postre", "untable"],
+    descripcion: "Cacao en polvo venezolano para preparar la merengada o la leche chocolatada de siempre.",
+    precio: 6800, precioOferta: 5900, categoria: "Bebidas", imagen: "toddy",
+    etiquetas: ["toddy", "cacao", "chocolate", "merengada"],
   },
   {
-    nombre: "Alfajores de chocolate",
-    presentacion: "Caja x 6",
-    descripcion: "Alfajores rellenos de dulce de leche y bañados en chocolate semiamargo.",
-    precio: 8400, origen: "AR", categoria: "Dulces y repostería", imagen: "alfajores",
-    etiquetas: ["alfajor", "chocolate", "golosina"],
+    nombre: "Chocolate Savoy con maní",
+    presentacion: "Barra 130 g",
+    descripcion: "El chocolate de leche venezolano de toda la vida, con maní.",
+    precio: 3500, categoria: "Dulces y chocolates", imagen: "chocolate-savoy",
+    etiquetas: ["savoy", "chocolate", "golosina", "mani"],
   },
   {
-    nombre: "Yerba mate con palo",
-    presentacion: "1 kg",
-    descripcion: "Yerba mate tradicional, molienda equilibrada y sabor intenso. Para el mate de todos los días.",
-    precio: 5200, origen: "AR", categoria: "Yerba e infusiones", imagen: "yerba-mate",
-    etiquetas: ["yerba", "mate", "infusion"],
+    nombre: "Diablitos Underwood",
+    presentacion: "Lata 115 g",
+    descripcion: "Jamón endiablado para untar en arepas, pan o galletas. Infaltable en la despensa venezolana.",
+    precio: 2600, categoria: "Enlatados y almacén", imagen: "diablitos",
+    etiquetas: ["diablitos", "jamon", "untable", "enlatado"],
   },
 ];
 
@@ -124,7 +124,7 @@ export async function cargarEjemplos() {
       presentacion: e.presentacion,
       precio: e.precio,
       precioOferta: e.precioOferta ?? null,
-      origen: e.origen,
+      origen: "VE",
       categoriaId: porSlug.get(slugify(e.categoria)),
       imagenes: [`/ejemplos/${e.imagen}.webp`],
       stock: null,

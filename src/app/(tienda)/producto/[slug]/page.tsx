@@ -7,7 +7,7 @@ import Galeria from "@/components/Galeria";
 import Precio from "@/components/Precio";
 import ProductCard from "@/components/ProductCard";
 import { getCategorias, getProductoPorSlug, getProductos } from "@/lib/data";
-import { ORIGENES, precioFinal, sinStock } from "@/lib/format";
+import { precioFinal, sinStock } from "@/lib/format";
 
 export const revalidate = 60;
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/producto/[slug]">
   if (!p) return { title: "Producto no encontrado" };
   return {
     title: p.nombre,
-    description: p.descripcion.slice(0, 160) || `${p.nombre} - ${ORIGENES[p.origen].label}`,
+    description: p.descripcion.slice(0, 160) || `${p.nombre} - Entre Naciones`,
     openGraph: { images: p.imagenes.slice(0, 1) },
   };
 }
@@ -62,10 +62,11 @@ export default async function ProductoPage({ params }: PageProps<"/producto/[slu
       <div className="grid gap-6 md:grid-cols-2 md:gap-10">
         <Galeria imagenes={producto.imagenes} alt={producto.nombre} />
         <div className="space-y-4">
-          <div className="flex flex-wrap gap-2 text-sm">
-            <span className="chip bg-white">{ORIGENES[producto.origen].bandera} {ORIGENES[producto.origen].label}</span>
-            {categoria && <span className="chip bg-white">{categoria.emoji} {categoria.nombre}</span>}
-          </div>
+          {categoria && (
+            <div className="flex flex-wrap gap-2 text-sm">
+              <span className="chip bg-white">{categoria.emoji} {categoria.nombre}</span>
+            </div>
+          )}
           <h1 className="font-display text-3xl leading-tight sm:text-4xl">{producto.nombre}</h1>
           {producto.presentacion && <p className="text-cacao/60">{producto.presentacion}</p>}
           <Precio producto={producto} grande />

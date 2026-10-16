@@ -9,16 +9,15 @@ import { toCategoria } from "@/lib/mappers";
 import type { Categoria } from "@/lib/types";
 
 const SUGERIDAS: [string, string][] = [
-  ["Harinas y granos", "🌽"],
-  ["Comida preparada", "🫓"],
+  ["Comida preparada", "🍲"],
   ["Congelados", "🧊"],
+  ["Harinas y granos", "🌽"],
+  ["Quesos y lácteos", "🧀"],
   ["Snacks y golosinas", "🍬"],
-  ["Dulces y repostería", "🍰"],
+  ["Dulces y chocolates", "🍫"],
   ["Bebidas", "🥤"],
-  ["Lácteos y quesos", "🧀"],
   ["Salsas y condimentos", "🌶️"],
-  ["Yerba e infusiones", "🧉"],
-  ["Almacén", "🛒"],
+  ["Enlatados y almacén", "🥫"],
 ];
 
 export default function AdminCategorias() {
