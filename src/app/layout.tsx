@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   },
   description:
     "Comida y productos venezolanos y argentinos: harina P.A.N., tequeños, dulces, snacks y mucho más. Pedí online con envío o retiro.",
+  applicationName: "Entre Naciones",
+  appleWebApp: { capable: true, title: "Entre Naciones", statusBarStyle: "default" },
   openGraph: {
     type: "website",
     locale: "es_AR",
