@@ -48,6 +48,8 @@ export interface ConfigTienda {
   envioGratisDesde: number | null;
   pedidoMinimo: number;
   instagram: string;
+  facebook: string;
+  tiktok: string;
 }
 
 export type EstadoPedido =
@@ -98,4 +100,6 @@ export const CONFIG_DEFAULT: ConfigTienda = {
   envioGratisDesde: null,
   pedidoMinimo: 0,
   instagram: "",
+  facebook: "",
+  tiktok: "",
 };

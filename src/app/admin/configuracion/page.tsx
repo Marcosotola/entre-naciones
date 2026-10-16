@@ -42,16 +42,27 @@ export default function AdminConfiguracion() {
       <h1 className="font-display text-3xl">Ajustes de la tienda</h1>
 
       <section className="card space-y-4 p-4">
-        <h2 className="font-bold">Contacto</h2>
+        <h2 className="font-bold">Contacto y redes</h2>
         <div>
           <label className="label" htmlFor="wa">WhatsApp donde llegan los pedidos *</label>
           <input id="wa" className="input" inputMode="tel" required value={config.whatsapp} onChange={(e) => set("whatsapp", e.target.value)} placeholder="5493511234567" />
           <p className="mt-1 text-xs text-cacao/60">Con código de país y área, sin 0 ni 15. Ej: 54 9 351 1234567</p>
         </div>
-        <div>
-          <label className="label" htmlFor="ig">Instagram</label>
-          <input id="ig" className="input" value={config.instagram} onChange={(e) => set("instagram", e.target.value)} placeholder="@entrenaciones" />
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <label className="label" htmlFor="ig">Instagram</label>
+            <input id="ig" className="input" value={config.instagram} onChange={(e) => set("instagram", e.target.value)} placeholder="@entrenaciones" />
+          </div>
+          <div>
+            <label className="label" htmlFor="fb">Facebook</label>
+            <input id="fb" className="input" value={config.facebook} onChange={(e) => set("facebook", e.target.value)} placeholder="entrenaciones" />
+          </div>
+          <div>
+            <label className="label" htmlFor="tt">TikTok</label>
+            <input id="tt" className="input" value={config.tiktok} onChange={(e) => set("tiktok", e.target.value)} placeholder="@entrenaciones" />
+          </div>
         </div>
+        <p className="-mt-2 text-xs text-cacao/60">Usuario o link del perfil. Las que dejes vacías no se muestran.</p>
         <div>
           <label className="label" htmlFor="banner">Frase de la portada</label>
           <input id="banner" className="input" value={config.mensajeBanner} onChange={(e) => set("mensajeBanner", e.target.value)} />

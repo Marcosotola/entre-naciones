@@ -181,7 +181,7 @@ export default function EditarProducto() {
       <section className="card space-y-3 p-4">
         <div className="flex items-center justify-between">
           <h2 className="font-bold">Fotos</h2>
-          <span className="text-xs text-cacao/60">La primera es la portada</span>
+          <span className="text-xs text-cacao/60">Cámara, galería o archivos · la primera es la portada</span>
         </div>
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
           {form.imagenes.map((url, i) => (
@@ -205,9 +205,17 @@ export default function EditarProducto() {
               <Loader2 className="h-6 w-6 animate-spin text-rojo" />
             </div>
           ))}
-          <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-cacao/20 text-cacao/60 transition hover:border-rojo hover:text-rojo">
+          <label
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              agregarFotos(e.dataTransfer.files);
+            }}
+            className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-cacao/20 p-1 text-center text-cacao/60 transition hover:border-rojo hover:text-rojo"
+          >
             <Camera className="h-7 w-7" />
-            <span className="text-xs font-bold">Agregar</span>
+            <span className="text-xs font-bold">Agregar fotos</span>
+            <span className="hidden text-[10px] leading-tight sm:block">Elegí o arrastrá archivos</span>
             <input ref={inputFotos} type="file" accept="image/*" multiple className="hidden" onChange={(e) => agregarFotos(e.target.files)} />
           </label>
         </div>

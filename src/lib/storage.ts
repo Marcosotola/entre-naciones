@@ -22,7 +22,8 @@ export async function subirImagen(archivo: File, carpeta: string): Promise<strin
 /** Borra archivos de Storage ignorando los que ya no existan. */
 export async function borrarImagenes(urls: string[]) {
   await Promise.all(
-    urls.map(async (url) => {
+    // Las imágenes de ejemplo (/ejemplos/...) viven en el sitio, no en Storage
+    urls.filter((u) => u.startsWith("https://")).map(async (url) => {
       try {
         await deleteObject(ref(storage, url));
       } catch (e) {

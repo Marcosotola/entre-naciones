@@ -1,6 +1,7 @@
 import type { ConfigTienda } from "@/lib/types";
 import Link from "next/link";
-import { AtSign, Clock, Lock, MapPin } from "lucide-react";
+import { Clock, Lock, MapPin } from "lucide-react";
+import RedesSociales from "./RedesSociales";
 
 export default function Footer({ config }: { config: ConfigTienda }) {
   return (
@@ -20,16 +21,9 @@ export default function Footer({ config }: { config: ConfigTienda }) {
             )}
           </div>
         )}
-        {config.instagram && (
-          <a
-            href={`https://instagram.com/${config.instagram.replace("@", "")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm hover:text-amarillo"
-          >
-            <AtSign className="h-4 w-4" /> @{config.instagram.replace("@", "")}
-          </a>
-        )}
+        <div className="space-y-2">
+          <RedesSociales config={config} />
+        </div>
       </div>
       <div className="flex items-center justify-center gap-3 border-t border-crema/10 py-4 text-xs text-crema/50">
         <span>© {new Date().getFullYear()} Entre Naciones</span>

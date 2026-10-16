@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { db } from "@/lib/firebase";
 import { formatPrecio, normalizar, ORIGENES, sinStock } from "@/lib/format";
 import { toCategoria, toProducto } from "@/lib/mappers";
+import { cargarEjemplos } from "@/lib/ejemplos";
 import { borrarImagenes } from "@/lib/storage";
 import type { Categoria, Producto } from "@/lib/types";
 
@@ -18,6 +19,18 @@ export default function AdminProductos() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [filtro, setFiltro] = useState<Filtro>("todos");
+  const [cargandoEjemplos, setCargandoEjemplos] = useState(false);
+
+  const onCargarEjemplos = async () => {
+    setCargandoEjemplos(true);
+    try {
+      await cargarEjemplos();
+    } catch (e) {
+      console.error(e);
+      alert("No se pudieron cargar los ejemplos");
+    }
+    setCargandoEjemplos(false);
+  };
 
   useEffect(() => {
     const u1 = onSnapshot(collection(db, "productos"), (s) =>
@@ -82,6 +95,14 @@ export default function AdminProductos() {
         <div className="card p-10 text-center">
           <p className="text-4xl">📦</p>
           <p className="mt-2 font-bold">{productos.length === 0 ? "Todavía no cargaste productos" : "Sin resultados"}</p>
+          {productos.length === 0 && (
+            <div className="mt-4 space-y-2">
+              <button onClick={onCargarEjemplos} disabled={cargandoEjemplos} className="btn-secundario">
+                {cargandoEjemplos ? "Cargando…" : "✨ Cargar 10 productos de ejemplo"}
+              </button>
+              <p className="text-xs text-cacao/60">5 menús y 5 productos con imágenes ilustrativas, para editar o borrar después.</p>
+            </div>
+          )}
         </div>
       ) : (
         <ul className="space-y-2">
